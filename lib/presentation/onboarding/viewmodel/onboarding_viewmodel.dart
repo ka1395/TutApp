@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../../../domain/models.dart';
+import '../../../domain/model/models.dart';
 import '../../base/dase_view_model.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/strings_manager.dart';

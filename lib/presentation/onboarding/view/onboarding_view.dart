@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 
-import '../../../domain/models.dart';
+import '../../../domain/model/models.dart';
 
 import '../viewmodel/onboarding_viewmodel.dart';
 import 'widget/onboarding_body.dart';

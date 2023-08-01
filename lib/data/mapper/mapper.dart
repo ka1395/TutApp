@@ -1,7 +1,7 @@
 import 'package:tutapp/app/extentions.dart';
 
 import '../../app/constants.dart';
-import 'package:tutapp/domain/models.dart';
+import 'package:tutapp/domain/model/models.dart';
 
 import '../response/responses.dart';
 
