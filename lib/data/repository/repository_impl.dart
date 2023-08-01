@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:dartz/dartz.dart';
 import 'package:tutapp/data/mapper/mapper.dart';
+import 'package:tutapp/data/network/error_handler.dart';
 import 'package:tutapp/data/network/network_info.dart';
 
 import '../../domain/model/models.dart';
@@ -19,17 +22,17 @@ class RepositoryImpl implements Repository {
       LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
       var respons = await _remoteDataSource.login(loginRequest);
-      if(respons.status==0){
+      if(respons.status==ApiInternalStatus.SUCCESS){
            return right( respons.toDomain());
       }
       else{
 
-           return left( Failure(409,respons.message??" business error message"));
+           return left(Failure(ApiInternalStatus.FAILURE, respons.message??ResponseMessage.DEFAULT));
 
       }
       
     } else {
-                 return left( Failure(501,"please check your internet connection"));
+                 return left( DataSource.INTERNAL_SERVER_ERROR.getFailure());
 
     }
   }
