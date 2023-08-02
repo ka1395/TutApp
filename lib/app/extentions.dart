@@ -1,3 +1,4 @@
+// ignore: camel_case_extensions
 extension nonNullString on String? {
   String orEmpty() {
     if (this == null) {
@@ -7,7 +8,7 @@ extension nonNullString on String? {
     }
   }
 }
-
+// ignore: camel_case_extensions
 extension nonNullInteger on int? {
   int orZero() {
     if (this == null) {

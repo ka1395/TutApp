@@ -36,6 +36,7 @@ dependencies:
   json_serializable: 
   dartz:
   internet_connection_checker:
+  pretty_dio_logger:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2 
