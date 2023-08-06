@@ -4,7 +4,7 @@ import 'package:tutapp/presentation/resources/strings_manager.dart';
 import 'package:tutapp/presentation/splash/splash_view.dart';
 
 import '../forgot_password/forgot_password_view.dart';
-import '../login/login_view.dart';
+import '../login/view/login_view.dart';
 import '../main/main_view.dart';
 import '../register/register_view.dart';
 import '../store_details/store_details_view.dart';
