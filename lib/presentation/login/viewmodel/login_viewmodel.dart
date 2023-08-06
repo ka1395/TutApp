@@ -1,12 +1,21 @@
+import 'dart:async';
 
-import 'package:tutapp/presentation/base/base_view_model.dart';
+import '/presentation/base/base_view_model.dart';
+
+import '../../common/freezed_data_classes.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
+  final StreamController userNameStreamController =
+      StreamController<String>.broadcast();
+  final StreamController passwordStreamController =
+      StreamController<String>.broadcast();
+  var loginOpject = LoginOpject("", "");
   // inputs
   @override
   void dispose() {
-    // TODO: implement dispose
+    userNameStreamController.close();
+    passwordStreamController.close();
   }
 
   @override
@@ -15,23 +24,21 @@ class LoginViewModel extends BaseViewModel
   }
 
   @override
-  // TODO: implement inputPassword
-  Sink get inputPassword => throw UnimplementedError();
+  Sink get inputPassword => passwordStreamController.sink;
 
   @override
-  // TODO: implement inputUserName
-  Sink get inputUserName => throw UnimplementedError();
+  Sink get inputUserName => userNameStreamController.sink;
 
   @override
   setPassword(String password) {
-    // TODO: implement setPassword
-    throw UnimplementedError();
+    inputPassword.add(password);
+    loginOpject = loginOpject.copyWith(password: password);
   }
 
   @override
   setUserName(String userName) {
-    // TODO: implement setUserName
-    throw UnimplementedError();
+    inputUserName.add(userName);
+        loginOpject = loginOpject.copyWith(userName: userName);
   }
 
   @override
@@ -42,12 +49,20 @@ class LoginViewModel extends BaseViewModel
 
   // outputs
   @override
-  // TODO: implement outIsPasswordValid
-  Stream<bool> get outIsPasswordValid => throw UnimplementedError();
+  Stream<bool> get outIsPasswordValid =>
+      passwordStreamController.stream.map((userName) => _isUserName(userName));
 
   @override
-  // TODO: implement outIsUserNameValid
-  Stream<bool> get outIsUserNameValid => throw UnimplementedError();
+  Stream<bool> get outIsUserNameValid => passwordStreamController.stream
+      .map((passwrod) => _isPasswordValid(passwrod));
+
+  bool _isPasswordValid(String password) {
+    return password.isNotEmpty;
+  }
+
+  bool _isUserName(String userName) {
+    return userName.isNotEmpty;
+  }
 }
 
 abstract class LoginViewModelInputs {
