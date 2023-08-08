@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -13,14 +14,19 @@ class LoginViewModel extends BaseViewModel
       StreamController<String>.broadcast();
   final StreamController passwordStreamController =
       StreamController<String>.broadcast();
+
+  final StreamController _areAllInputsValidStreamController =
+      StreamController<void>.broadcast();
+
   var loginOpject = LoginOpject("", "");
-  LoginUseCase _loginUseCase;
+  final _loginUseCase;
   LoginViewModel(this._loginUseCase);
   // inputs
   @override
   void dispose() {
     userNameStreamController.close();
     passwordStreamController.close();
+    _areAllInputsValidStreamController.close();
   }
 
   @override
@@ -35,15 +41,21 @@ class LoginViewModel extends BaseViewModel
   Sink get inputUserName => userNameStreamController.sink;
 
   @override
+  Sink get inputAreAllInputsValid => _areAllInputsValidStreamController.sink;
+
+  @override
   setPassword(String password) {
     inputPassword.add(password);
     loginOpject = loginOpject.copyWith(password: password);
+    inputAreAllInputsValid.add(null);
   }
 
   @override
   setUserName(String userName) {
     inputUserName.add(userName);
     loginOpject = loginOpject.copyWith(userName: userName);
+        inputAreAllInputsValid.add(null);
+
   }
 
   @override
@@ -53,8 +65,7 @@ class LoginViewModel extends BaseViewModel
         .fold((failure) {
       debugPrint(failure.message);
     }, (data) {
-     debugPrint(data.customer?.name);
-
+      debugPrint(data.customer?.name);
     });
   }
 
@@ -74,6 +85,16 @@ class LoginViewModel extends BaseViewModel
   bool _isUserName(String userName) {
     return userName.isNotEmpty;
   }
+
+  @override
+  Stream<bool> get outAreAllInputsValid =>
+      _areAllInputsValidStreamController.stream
+          .map((_) => _areAllInputsValid());
+
+  bool _areAllInputsValid() {
+    return _isPasswordValid(loginOpject.password) &&
+        _isUserName(loginOpject.userName);
+  }
 }
 
 abstract class LoginViewModelInputs {
@@ -86,10 +107,12 @@ abstract class LoginViewModelInputs {
   Sink get inputUserName;
 
   Sink get inputPassword;
+  Sink get inputAreAllInputsValid;
 }
 
 abstract class LoginViewModelOutputs {
   Stream<bool> get outIsUserNameValid;
 
   Stream<bool> get outIsPasswordValid;
+  Stream<bool> get outAreAllInputsValid;
 }

@@ -15,8 +15,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
- final LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
- final TextEditingController _userNameController = TextEditingController();
+  final LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -40,7 +40,8 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Container();
   }
-Widget _getContentWidget() {
+
+  Widget _getContentWidget() {
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(top: AppPadding.p100),
@@ -62,18 +63,18 @@ Widget _getContentWidget() {
                       stream: _viewModel.outIsUserNameValid,
                       builder: (context, snapshot) {
                         return TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: _userNameController,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: _userNameController,
                           decoration: InputDecoration(
                               hintText: AppStrings.username,
                               labelText: AppStrings.username,
                               errorText: (snapshot.data ?? true)
                                   ? null
                                   : AppStrings.usernameError),
-                            );
+                        );
                       }),
-                )
-                , const SizedBox(
+                ),
+                const SizedBox(
                   height: AppSize.s28,
                 ),
                 Padding(
@@ -83,33 +84,35 @@ Widget _getContentWidget() {
                       stream: _viewModel.outIsPasswordValid,
                       builder: (context, snapshot) {
                         return TextFormField(
-                            keyboardType: TextInputType.visiblePassword,
-                            controller: _passwordController,
+                          keyboardType: TextInputType.visiblePassword,
+                          controller: _passwordController,
                           decoration: InputDecoration(
                               hintText: AppStrings.password,
                               labelText: AppStrings.password,
                               errorText: (snapshot.data ?? true)
                                   ? null
                                   : AppStrings.passwordError),
-                            );
+                        );
                       }),
                 ),
-                  const SizedBox(
+                const SizedBox(
                   height: AppSize.s28,
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(
                       left: AppPadding.p28, right: AppPadding.p28),
                   child: StreamBuilder<bool>(
-                      stream: _viewModel.outIsPasswordValid,
+                      stream: _viewModel.outAreAllInputsValid,
                       builder: (context, snapshot) {
-                        return ElevatedButton(onPressed: (){
-                          _viewModel.login();
-                        }, child: const Text(AppStrings.login));
+                        return ElevatedButton(
+                            onPressed: (snapshot.data ?? false)
+                                ? () {
+                                    _viewModel.login();
+                                  }
+                                : null,
+                            child: const Text(AppStrings.login));
                       }),
                 ),
-              
               ],
             ),
           ),
@@ -117,6 +120,7 @@ Widget _getContentWidget() {
       ),
     );
   }
+
   @override
   void dispose() {
     _viewModel.dispose();
