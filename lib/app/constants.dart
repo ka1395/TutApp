@@ -1,5 +1,5 @@
 class Constants {
-  static const String baseUrl = "https://khaled123.mocklab.io/";
+  static const String baseUrl = "https://khaled123.wiremockapi.cloud/";
     static const String empty = "";
 
   static const String token = "SEND TOKEN HERE";

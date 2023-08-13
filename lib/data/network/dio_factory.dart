@@ -27,6 +27,7 @@ class DioFactory {
     dio.options = BaseOptions(
         baseUrl: Constants.baseUrl,
         headers: headers,
+        connectTimeout:const Duration(milliseconds: Constants.apiTimeOut) ,
         receiveTimeout: const Duration(milliseconds: Constants.apiTimeOut),
         sendTimeout: const Duration(milliseconds: Constants.apiTimeOut));
     if (!kReleaseMode) {
