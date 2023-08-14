@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
+import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/font_manager.dart';
 import '../../resources/strings_manager.dart';
@@ -40,24 +42,24 @@ class StateRenderer extends StatelessWidget {
   Widget _getStateWidget(BuildContext context) {
     switch (stateRendererType) {
       case StateRendererType.popupLoadingState:
-        return _getPopUpDialog(context, [_getAnimatedImage()]);
+        return _getPopUpDialog(context, [_getAnimatedImage(JsonAssets.loading)]);
       case StateRendererType.popupErrorState:
       return _getPopUpDialog(context, [
-          _getAnimatedImage(),
+          _getAnimatedImage(JsonAssets.error),
           _getMessage(message),
           _getRetryButton(AppStrings.ok, context)
         ]);
       case StateRendererType.fullScreenLoadingState:
-        return _getItemsColumn([_getAnimatedImage(), _getMessage(message)]);
+        return _getItemsColumn([_getAnimatedImage(JsonAssets.loading), _getMessage(message)]);
 
       case StateRendererType.fullScreenErrorState:
         return _getItemsColumn([
-          _getAnimatedImage(),
+          _getAnimatedImage(JsonAssets.error),
           _getMessage(message),
           _getRetryButton(AppStrings.retryAgain, context)
         ]);
       case StateRendererType.fullScreenEmptyState:
-        return _getItemsColumn([_getAnimatedImage(), _getMessage(message)]);
+        return _getItemsColumn([_getAnimatedImage(JsonAssets.empty), _getMessage(message)]);
 
       case StateRendererType.contentState:
         return Container();
@@ -100,12 +102,13 @@ Widget _getDialogContent(BuildContext context, List<Widget> children) {
     );
   }
 
-  Widget _getAnimatedImage() {
+  Widget _getAnimatedImage(String animationName) {
     return SizedBox(
-      height: AppSize.s100,
-      width: AppSize.s100,
-      child: Container(), // todo add json image here
-    );
+       height: AppSize.s100,
+        width: AppSize.s100,
+        child: Lottie.asset(animationName),
+        ); // todo add json image here
+    
   }
 
   Widget _getMessage(String message) {
