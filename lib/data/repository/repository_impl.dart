@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:tutapp/data/mapper/mapper.dart';
 import 'package:tutapp/data/network/error_handler.dart';
@@ -20,19 +19,27 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, Authentication>> login(
       LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
-      var respons = await _remoteDataSource.login(loginRequest);
-      if(respons.status==ApiInternalStatus.SUCCESS){
-           return right( respons.toDomain());
-      }
-      else{
+      // its connected to internet, its safe to call API
+      try{
+        final response = await _remoteDataSource.login(loginRequest);
 
-           return left(Failure(ApiInternalStatus.FAILURE, respons.message??ResponseMessage.DEFAULT));
-
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // return either right
+          // return data
+          return Right(response.toDomain());
+        } else {
+          // failure --return business error
+          // return either left
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message ?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
       }
-      
     } else {
-                 return left( DataSource.INTERNAL_SERVER_ERROR.getFailure());
-
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
 }

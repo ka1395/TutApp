@@ -28,30 +28,30 @@ class StateRenderer extends StatelessWidget {
   Function retryActionFunction;
 
   StateRenderer(
-      {super.key,
-      required this.stateRendererType,
+      {required this.stateRendererType,
       this.message = AppStrings.loading,
       this.title = "",
       required this.retryActionFunction});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return _getStateWidget(context);
   }
 
   Widget _getStateWidget(BuildContext context) {
     switch (stateRendererType) {
       case StateRendererType.popupLoadingState:
-        return _getPopUpDialog(context, [_getAnimatedImage(JsonAssets.loading)]);
+        return _getPopUpDialog(
+            context, [_getAnimatedImage(JsonAssets.loading)]);
       case StateRendererType.popupErrorState:
-      return _getPopUpDialog(context, [
+        return _getPopUpDialog(context, [
           _getAnimatedImage(JsonAssets.error),
           _getMessage(message),
           _getRetryButton(AppStrings.ok, context)
         ]);
       case StateRendererType.fullScreenLoadingState:
-        return _getItemsColumn([_getAnimatedImage(JsonAssets.loading), _getMessage(message)]);
-
+        return _getItemsColumn(
+            [_getAnimatedImage(JsonAssets.loading), _getMessage(message)]);
       case StateRendererType.fullScreenErrorState:
         return _getItemsColumn([
           _getAnimatedImage(JsonAssets.error),
@@ -59,8 +59,8 @@ class StateRenderer extends StatelessWidget {
           _getRetryButton(AppStrings.retryAgain, context)
         ]);
       case StateRendererType.fullScreenEmptyState:
-        return _getItemsColumn([_getAnimatedImage(JsonAssets.empty), _getMessage(message)]);
-
+        return _getItemsColumn(
+            [_getAnimatedImage(JsonAssets.empty), _getMessage(message)]);
       case StateRendererType.contentState:
         return Container();
       default:
@@ -68,7 +68,7 @@ class StateRenderer extends StatelessWidget {
     }
   }
 
-  Widget _getPopUpDialog(BuildContext context,List<Widget> children) {
+  Widget _getPopUpDialog(BuildContext context, List<Widget> children) {
     return Dialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s14)),
@@ -85,7 +85,7 @@ class StateRenderer extends StatelessWidget {
     );
   }
 
-Widget _getDialogContent(BuildContext context, List<Widget> children) {
+  Widget _getDialogContent(BuildContext context, List<Widget> children) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -104,11 +104,9 @@ Widget _getDialogContent(BuildContext context, List<Widget> children) {
 
   Widget _getAnimatedImage(String animationName) {
     return SizedBox(
-       height: AppSize.s100,
+        height: AppSize.s100,
         width: AppSize.s100,
-        child: Lottie.asset(animationName),
-        ); // todo add json image here
-    
+        child: Lottie.asset(animationName));
   }
 
   Widget _getMessage(String message) {
@@ -146,3 +144,4 @@ Widget _getDialogContent(BuildContext context, List<Widget> children) {
     );
   }
 }
+

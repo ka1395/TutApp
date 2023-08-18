@@ -4,12 +4,12 @@ import '../../../app/constants.dart';
 import '../../resources/strings_manager.dart';
 import 'state_renderer.dart';
 
+
 abstract class FlowState {
   StateRendererType getStateRendererType();
 
   String getMessage();
 }
-
 // loading state (POPUP,FULL SCREEN)
 
 class LoadingState extends FlowState {
@@ -79,6 +79,7 @@ extension FlowStateExtension on FlowState {
             // show content ui of the screen
             return contentScreenWidget;
           } else {
+            // full screen loading state
             return StateRenderer(
                 message: getMessage(),
                 stateRendererType: getStateRendererType(),
@@ -87,15 +88,14 @@ extension FlowStateExtension on FlowState {
         }
       case ErrorState:
         {
-                    dismissDialog(context);
-
-           if (getStateRendererType() == StateRendererType.popupErrorState) {
+          dismissDialog(context);
+          if (getStateRendererType() == StateRendererType.popupErrorState) {
             // show popup error
             showPopup(context, getStateRendererType(), getMessage());
             // show content ui of the screen
             return contentScreenWidget;
           } else {
-            // full screen loading state
+            // full screen error state
             return StateRenderer(
                 message: getMessage(),
                 stateRendererType: getStateRendererType(),
@@ -104,26 +104,24 @@ extension FlowStateExtension on FlowState {
         }
       case EmptyState:
         {
-        return   StateRenderer(
+          return StateRenderer(
               stateRendererType: getStateRendererType(),
               message: getMessage(),
-              retryActionFunction: retryActionFunction);
+              retryActionFunction: () {});
         }
-
       case ContentState:
         {
-                    dismissDialog(context);
-
+          dismissDialog(context);
           return contentScreenWidget;
         }
       default:
         {
-                    dismissDialog(context);
-
+          dismissDialog(context);
           return contentScreenWidget;
         }
     }
   }
+
   _isCurrentDialogShowing(BuildContext context) =>
       ModalRoute.of(context)?.isCurrent != true;
 
@@ -132,7 +130,6 @@ extension FlowStateExtension on FlowState {
       Navigator.of(context, rootNavigator: true).pop(true);
     }
   }
-
 
   showPopup(BuildContext context, StateRendererType stateRendererType,
       String message) {
