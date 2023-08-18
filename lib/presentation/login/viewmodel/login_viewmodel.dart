@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:tutapp/presentation/common/state_renderer.dart/state_renderer.dart';
 
 import '../../../domain/usecase/login_usecase.dart';
+import '../../common/state_renderer.dart/state_renderer_impl.dart';
 import '/presentation/base/base_view_model.dart';
 
 import '../../common/freezed_data_classes.dart';
@@ -21,11 +22,12 @@ class LoginViewModel extends BaseViewModel
   var loginOpject = LoginOpject("", "");
   final _loginUseCase;
   LoginViewModel(this._loginUseCase);
-    // LoginViewModel();
+  // LoginViewModel();
 
   // inputs
   @override
   void dispose() {
+    super.dispose();
     userNameStreamController.close();
     passwordStreamController.close();
     _areAllInputsValidStreamController.close();
@@ -33,7 +35,7 @@ class LoginViewModel extends BaseViewModel
 
   @override
   void start() {
-    // TODO: implement start
+    inputState.add(ContentState());
   }
 
   @override
@@ -56,18 +58,21 @@ class LoginViewModel extends BaseViewModel
   setUserName(String userName) {
     inputUserName.add(userName);
     loginOpject = loginOpject.copyWith(userName: userName);
-        inputAreAllInputsValid.add(null);
-
+    inputAreAllInputsValid.add(null);
   }
 
   @override
   login() async {
+    LoadingState(stateRendererType: StateRendererType.popupLoadingState);
     (await _loginUseCase.execute(
             LoginUseCaseInpute(loginOpject.userName, loginOpject.password)))
         .fold((failure) {
+      inputState
+          .add(ErrorState(StateRendererType.popupErrorState, failure.message));
       debugPrint(failure.message);
     }, (data) {
       debugPrint(data.customer?.name);
+      inputState.add(ContentState());
     });
   }
 
