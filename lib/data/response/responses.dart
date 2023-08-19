@@ -1,3 +1,4 @@
+
 // ignore: depend_on_referenced_packages
 import 'package:json_annotation/json_annotation.dart';
 part 'responses.g.dart';
@@ -19,13 +20,13 @@ class CustomerResponse {
   @JsonKey(name: "numOfNotifications")
   int? numOfNotifications;
   CustomerResponse(this.id, this.name, this.numOfNotifications);
-  
-   factory CustomerResponse.fromJson(Map<String, dynamic> json) =>
+
+  factory CustomerResponse.fromJson(Map<String, dynamic> json) =>
       _$CustomerResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CustomerResponseToJson(this);
 }
- 
+
 @JsonSerializable()
 class ContactsResponse {
   @JsonKey(name: "phone")
@@ -36,7 +37,7 @@ class ContactsResponse {
   String? link;
   ContactsResponse(this.phone, this.email, this.link);
 
-   factory ContactsResponse.fromJson(Map<String, dynamic> json) =>
+  factory ContactsResponse.fromJson(Map<String, dynamic> json) =>
       _$ContactsResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ContactsResponseToJson(this);
@@ -53,4 +54,19 @@ class AuthenticationResponse extends BaseResponse {
       _$AuthenticationResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
+}
+
+@JsonSerializable()
+class ForgotPasswordResponse extends BaseResponse {
+  @JsonKey(name: 'support')
+  String? support;
+
+  ForgotPasswordResponse(this.support);
+
+// toJson
+  Map<String, dynamic> toJson() => _$ForgotPasswordResponseToJson(this);
+
+//fromJson
+  factory ForgotPasswordResponse.fromJson(Map<String, dynamic> json) =>
+      _$ForgotPasswordResponseFromJson(json);
 }

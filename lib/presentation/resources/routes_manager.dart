@@ -4,7 +4,7 @@ import 'package:tutapp/presentation/resources/strings_manager.dart';
 import 'package:tutapp/presentation/splash/splash_view.dart';
 
 import '../../app/di.dart';
-import '../forgot_password/forgot_password_view.dart';
+import '../forgot_password/view/forgot_password_view.dart';
 import '../login/view/login_view.dart';
 import '../main/main_view.dart';
 import '../register/register_view.dart';
@@ -33,7 +33,10 @@ class RouteGenerator {
       case Routes.registerRoute:
         return MaterialPageRoute(builder: (_) => const RegisterView());
       case Routes.forgotPasswordRoute:
+        initForgotPasswordModule();
+
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
+
       case Routes.mainRoute:
         return MaterialPageRoute(builder: (_) => const MainView());
       case Routes.storeDetailsRoute:
