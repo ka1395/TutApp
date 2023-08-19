@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:tutapp/app/app_preferences.dart';
+import 'package:tutapp/app/di.dart';
 
 import '../../../domain/model/models.dart';
 
@@ -18,9 +18,12 @@ class OnBoardingView extends StatefulWidget {
 class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController _pageController = PageController();
   OnBoardingViewModel viewModel = OnBoardingViewModel();
-  @override
+
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+    @override
   void initState() {
     viewModel.start();
+    _appPreferences.setOnBoardingScreenViewed();
     super.initState();
   }
 
@@ -29,7 +32,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return StreamBuilder<SliderViewObject>(
       stream: viewModel.outputSliderViewObject,
       builder: (context, snapshot) {
-        return OnBoardingBody(sliderViewObject: snapshot.data,pageController: _pageController,viewModel: viewModel,);
+        return OnBoardingBody(
+          sliderViewObject: snapshot.data,
+          pageController: _pageController,
+          viewModel: viewModel,
+        );
       },
     );
   }
@@ -40,4 +47,3 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     super.dispose();
   }
 }
-
