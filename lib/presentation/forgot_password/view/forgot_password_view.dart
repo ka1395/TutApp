@@ -7,17 +7,15 @@ import '../../resources/color_manager.dart';
 import '../../resources/strings_manager.dart';
 import '../../resources/values_manager.dart';
 import '../viewmodel/forgot_password_viewmodel.dart';
-
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _ForgotPasswordViewState createState() => _ForgotPasswordViewState();
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailTextEditingController =
       TextEditingController();
 
@@ -35,9 +33,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     bind();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: StreamBuilder<FlowState>(
         stream: _viewModel.outputState,
         builder: (context, snapshot) {

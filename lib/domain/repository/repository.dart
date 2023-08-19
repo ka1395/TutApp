@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:tutapp/data/network/requests.dart';
-import 'package:tutapp/data/response/responses.dart';
 import 'package:tutapp/domain/model/models.dart';
 
 import '../../data/network/failure.dart';
