@@ -13,7 +13,6 @@ class AppStrings {
       "Tut app is an awesome flutter application using clean architecture #3";
   static const onBoardingSubTitle4 =
       "Tut app is an awesome flutter application using clean architecture #4";
-
   static const skip = "Skip";
   static const username = "Username";
   static const password = "Password";
@@ -30,7 +29,13 @@ class AppStrings {
   static const String resetPassword = "Reset Password";
   static const String success = "Success";
   static const String userNameInvalid = "User name should be at least 8 chars";
-  static const String mobileNumberInvalid = "Mobile should be at least 10 digits";
+  static const String mobileNumberInvalid =
+      "Mobile should be at least 10 digits";
   static const String passwordInvalid = "Password should be at least 6 chars";
-
+  static const String alreadyHaveAccount = "Already have an account ? Login";
+  static const register = "Register";
+  static const mobileNumber = "Mobile Number";
+  static const profilePicture = "Profile picture";
+  static const photoGallery = "Photo from galley";
+  static const photoCamera = "Photo from camera";
 }

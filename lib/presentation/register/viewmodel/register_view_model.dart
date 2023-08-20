@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import '../../common/state_renderer.dart/state_renderer.dart';
-import '../../common/state_renderer.dart/state_renderer_impl.dart';
 import '/domain/usecase/register_usecase.dart';
 import '/presentation/base/baseviewmodel.dart';
 import '/presentation/resources/strings_manager.dart';
 
 import '../../../app/functions.dart';
 import '../../common/freezed_data_classes.dart';
+import '../../common/state_renderer/state_renderer.dart';
+import '../../common/state_renderer/state_renderer_impl.dart';
 
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInput, RegisterViewModelOutput {
@@ -25,6 +25,9 @@ class RegisterViewModel extends BaseViewModel
       StreamController<void>.broadcast();
 
   final RegisterUseCase _registerUseCase;
+
+  StreamController isUserRegisteredInSuccessfullyStreamController =
+      StreamController<bool>();
   var registerObject = RegisterObject("", "", "", "", "", "");
 
   RegisterViewModel(this._registerUseCase);
@@ -43,6 +46,7 @@ class RegisterViewModel extends BaseViewModel
     passwordStreamController.close();
     profilePictureStreamController.close();
     areAllInputsValidStreamController.close();
+    isUserRegisteredInSuccessfullyStreamController.close();
     super.dispose();
   }
 
@@ -58,11 +62,8 @@ class RegisterViewModel extends BaseViewModel
   @override
   Sink get inputProfilePicture => profilePictureStreamController.sink;
 
-
   @override
-
   Sink get inputUserName => userNameStreamController.sink;
-
 
   @override
   Sink get inputAllInputsValid => areAllInputsValidStreamController.sink;
@@ -89,152 +90,89 @@ class RegisterViewModel extends BaseViewModel
       // content
       inputState.add(ContentState());
       // navigate to main screen
-      // isUserLoggedInSuccessfullyStreamController.add(true);
+      isUserRegisteredInSuccessfullyStreamController.add(true);
     });
   }
 
   @override
-
   setUserName(String userName) {
-
+    inputUserName.add(userName);
     if (_isUserNameValid(userName)) {
-
       //  update register view object
-
       registerObject = registerObject.copyWith(userName: userName);
-
     } else {
-
       // reset username value in register view object
-
       registerObject = registerObject.copyWith(userName: "");
-
     }
-
+    validate();
   }
-  @override
 
+  @override
   setCountryCode(String countryCode) {
-
     if (countryCode.isNotEmpty) {
-
       //  update register view object
-
       registerObject = registerObject.copyWith(countryMobileCode: countryCode);
-
     } else {
-
       // reset code value in register view object
-
       registerObject = registerObject.copyWith(countryMobileCode: "");
-
     }
-validate();
+    validate();
   }
 
-
-
-
   @override
-
   setEmail(String email) {
-
+    inputEmail.add(email);
     if (isEmailValid(email)) {
-
       //  update register view object
-
       registerObject = registerObject.copyWith(email: email);
-
     } else {
-
       // reset email value in register view object
-
       registerObject = registerObject.copyWith(email: "");
-
     }
-validate();
+    validate();
   }
 
-
-
-
   @override
-
   setMobileNumber(String mobileNumber) {
-
+    inputMobileNumber.add(mobileNumber);
     if (_isMobileNumberValid(mobileNumber)) {
-
       //  update register view object
-
       registerObject = registerObject.copyWith(mobileNumber: mobileNumber);
-
     } else {
-
       // reset mobileNumber value in register view object
-
       registerObject = registerObject.copyWith(mobileNumber: "");
-
     }
-validate();
+    validate();
   }
 
-
-
-
   @override
-
   setPassword(String password) {
-
+    inputPassword.add(password);
     if (_isPasswordValid(password)) {
-
       //  update register view object
-
       registerObject = registerObject.copyWith(password: password);
-
     } else {
-
       // reset password value in register view object
-
       registerObject = registerObject.copyWith(password: "");
-
     }
-validate();
+    validate();
   }
-
-
-
 
   @override
-
   setProfilePicture(File profilePicture) {
-
+    inputProfilePicture.add(profilePicture);
     if (profilePicture.path.isNotEmpty) {
-
       //  update register view object
-
       registerObject =
-
           registerObject.copyWith(profilePicture: profilePicture.path);
-
     } else {
-
       // reset profilePicture value in register view object
-
       registerObject = registerObject.copyWith(profilePicture: "");
-
     }
-validate();
+    validate();
   }
-
-
-
 
   // -- outputs
-
-
-  @override
-  Stream<bool> get outputAreAllInputsValid =>
-      areAllInputsValidStreamController.stream.map((_) => _areAllInputsValid());
 
   @override
   Stream<bool> get outputIsUserNameValid => userNameStreamController.stream
@@ -271,8 +209,12 @@ validate();
       (isPasswordValid) => isPasswordValid ? null : AppStrings.passwordInvalid);
 
   @override
-  Stream<File> get outputIsProfilePictureValid =>
+  Stream<File> get outputProfilePicture =>
       profilePictureStreamController.stream.map((file) => file);
+
+  @override
+  Stream<bool> get outputAreAllInputsValid =>
+      areAllInputsValidStreamController.stream.map((_) => _areAllInputsValid());
 
   // --  private functions
 
@@ -287,7 +229,6 @@ validate();
   bool _isPasswordValid(String password) {
     return password.length >= 6;
   }
-
 
   bool _areAllInputsValid() {
     return registerObject.countryMobileCode.isNotEmpty &&
@@ -310,53 +251,26 @@ abstract class RegisterViewModelInput {
 
   Sink get inputEmail;
 
-
   Sink get inputPassword;
-
-
-
 
   Sink get inputProfilePicture;
 
-
-
+  Sink get inputAllInputsValid;
 
   register();
 
-
-
-
   setUserName(String userName);
-
-
-
 
   setMobileNumber(String mobileNumber);
 
-
-
-
   setCountryCode(String countryCode);
-
-
-
 
   setEmail(String email);
 
-
-
-
   setPassword(String password);
 
-
-
-
   setProfilePicture(File profilePicture);
-  Sink get inputAllInputsValid;
 }
-
-
-
 
 abstract class RegisterViewModelOutput {
   Stream<bool> get outputIsUserNameValid;
@@ -375,6 +289,7 @@ abstract class RegisterViewModelOutput {
 
   Stream<String?> get outputErrorPassword;
 
-  Stream<File> get outputIsProfilePictureValid;
-    Stream<bool> get outputAreAllInputsValid;
+  Stream<File> get outputProfilePicture;
+
+  Stream<bool> get outputAreAllInputsValid;
 }
