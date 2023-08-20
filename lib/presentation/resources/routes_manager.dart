@@ -7,7 +7,7 @@ import '../../app/di.dart';
 import '../forgot_password/view/forgot_password_view.dart';
 import '../login/view/login_view.dart';
 import '../main/main_view.dart';
-import '../register/register_view.dart';
+import '../register/view/register_view.dart';
 import '../store_details/store_details_view.dart';
 
 class Routes {
