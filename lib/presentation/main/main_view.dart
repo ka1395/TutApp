@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../resources/color_manager.dart';
 import '../resources/strings_manager.dart';
 import '../resources/values_manager.dart';
-import 'pages/home_page.dart';
-import 'pages/notifications_page.dart';
-import 'pages/search_page.dart';
-import 'pages/settings_page.dart';
+import 'pages/home/view/home_page.dart';
+import 'pages/notifications/view/notifications_page.dart';
+import 'pages/search/view/search_page.dart';
+import 'pages/settings/view/settings_page.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
